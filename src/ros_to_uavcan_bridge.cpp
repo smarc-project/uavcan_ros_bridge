@@ -51,7 +51,7 @@ int main(int argc, char** argv)
      */
     uav_node.setModeOperational();
 
-    boost::function<void (const ros::TimerEvent&)> callback = [&] (const ros::TimerEvent& event) {
+    std::function<void (const ros::TimerEvent&)> callback = [&] (const ros::TimerEvent& event) {
         // Announce that the uav node is alive and well
         uav_node.spinOnce();
     };
