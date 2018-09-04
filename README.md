@@ -11,10 +11,13 @@ Then, simply put this project into a catkin workspace and run `catkin_make` to b
 ## Usage
 
 Launch conversion in both directions (between uavcan and ros) by running the launch file:
-
 ```
 roslaunch uavcan_ros_bridge bridge.launch
 ```
+This will launch two nodes: the `uavcan_to_ros_bridge_node` and the `ros_to_uavcan_bridge_node`
+which handle the conversion in the respective directions. Any new type conversions should
+be added to the node that handles the relevant direction.
+
 ## Adding new conversions
 
 You can add new conversion headers for [ros to uavcan](https://gitr.sys.kth.se/smarc-project/sam_drivers/tree/master/uavcan_ros_bridge/include/uavcan_ros_bridge/ros_to_uav)
