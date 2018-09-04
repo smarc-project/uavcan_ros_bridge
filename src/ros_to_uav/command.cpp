@@ -3,10 +3,10 @@
 namespace ros_to_uav {
 
 template <>
-bool convert(const std_msgs::Float32& ros_msg, uavcan::equipment::actuator::Command& uav_msg)
+bool convert(const std_msgs::Float32& ros_msg, uavcan::equipment::actuator::ArrayCommand& uav_msg)
 {
-    ROS_INFO("Successfully converted the command to uavcan");
-    uav_msg.command_value = ros_msg.data;
+    uav_msg.commands.resize(1);
+    uav_msg.commands[0].command_value = ros_msg.data;
     return true;
 }
 

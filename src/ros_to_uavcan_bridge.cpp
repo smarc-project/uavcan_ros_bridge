@@ -8,7 +8,8 @@
 #include <uavcan_ros_bridge/ros_to_uav/command.h>
 #include <uavcan/equipment/ahrs/RawIMU.hpp>
 #include <uavcan/equipment/actuator/Command.hpp>
-#include <uavcan/equipment/actuator/Command.hpp>
+#include <uavcan/equipment/actuator/ArrayCommand.hpp>
+#include <uavcan/equipment/power/CircuitStatus.hpp>
 
 extern uavcan::ICanDriver& getCanDriver();
 extern uavcan::ISystemClock& getSystemClock();
@@ -58,7 +59,8 @@ int main(int argc, char** argv)
     }
 
     //RosUavConversionServer<uavcan::equipment::ahrs::RawIMU, std_msgs::Float32> server(node, ros_node, "uavcan_command");
-    RosUavConversionServer<uavcan::equipment::actuator::Command, std_msgs::Float32> server(node, ros_node, "uavcan_command");
+    RosUavConversionServer<uavcan::equipment::actuator::ArrayCommand, std_msgs::Float32> server(node, ros_node, "uavcan_command");
+    //RosUavConversionServer<uavcan::equipment::power::CircuitStatus, std_msgs::Float32> server(node, ros_node, "uavcan_command");
 
     /*
      * Running the node.
