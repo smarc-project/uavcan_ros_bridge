@@ -21,20 +21,15 @@ static Node& getNode()
 
 int main(int argc, char** argv)
 {
-    if (argc < 2)
-    {
-        std::cerr << "Usage: " << argv[0] << " <node-id>" << std::endl;
-        return 1;
-    }
+    ros::init(argc, argv, "uavcan_to_ros_bridge_node");
+    ros::NodeHandle ros_node;
 
-    const int self_node_id = std::stoi(argv[1]);
+    int self_node_id;
+    ros::param::param<int>("~uav_node_id", self_node_id, 114);
 
     auto& node = getNode();
     node.setNodeID(self_node_id);
-    node.setName("org.uavcan.tutorial.subscriber");
-
-    ros::init(argc, argv, "uavcan_bridge");
-    ros::NodeHandle ros_node;
+    node.setName("smarc.sam.uavcan_bridge.subscriber");
 
     /*
      * Dependent objects (e.g. publishers, subscribers, servers, callers, timers, ...) can be initialized only

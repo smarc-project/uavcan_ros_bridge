@@ -1,0 +1,14 @@
+<launch>
+
+  <arg name="publisher_uav_node_id" default="97"/>
+  <arg name="subscriber_uav_node_id" default="98"/>
+
+  <node name="ros_to_uavcan_bridge_node" pkg="uavcan_ros_bridge" type="ros_to_uavcan_bridge" respawn="true" output="screen">
+    <param name="uav_node_id" value="$(arg subscriber_uav_node_id)"/>
+  </node>
+
+  <node name="uavcan_to_ros_bridge_node" pkg="uavcan_ros_bridge" type="uavcan_to_ros_bridge" respawn="false" output="screen">
+    <param name="uav_node_id" value="$(arg publisher_uav_node_id)"/>
+  </node>
+
+</launch>
