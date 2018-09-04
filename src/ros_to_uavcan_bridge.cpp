@@ -41,7 +41,7 @@ int main(int argc, char** argv)
         throw std::runtime_error("Failed to start the node; error: " + std::to_string(node_start_res));
     }
 
-    RosUavConversionServer<uavcan::equipment::actuator::ArrayCommand, std_msgs::Float32> server(node, ros_node, "uavcan_command");
+    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, std_msgs::Float32> server(node, ros_node, "uavcan_command");
 
     /*
      * Running the node.

@@ -41,7 +41,7 @@ int main(int argc, char** argv)
         throw std::runtime_error("Failed to start the node; error: " + std::to_string(node_start_res));
     }
 
-    UavRosConversionServer<uavcan::equipment::ahrs::RawIMU, sensor_msgs::Imu> server(node, ros_node, "uavcan_imu");
+    uav_to_ros::ConversionServer<uavcan::equipment::ahrs::RawIMU, sensor_msgs::Imu> server(node, ros_node, "uavcan_imu");
 
     /*
      * Running the node.
