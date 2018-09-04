@@ -51,19 +51,12 @@ int main(int argc, char** argv)
      */
     uav_node.setModeOperational();
 
-    /*
-    const int spin_res = node.spin(uavcan::MonotonicDuration::fromMSec(1000));
-    if (spin_res < 0) {
-        std::cerr << "Transient failure: " << spin_res << std::endl;
-    }
+    boost::function<void (const ros::TimerEvent&)> callback = [&] (const ros::TimerEvent& event) {
+        // Announce that the uav node is alive and well
+        uav_node.spinOnce();
+    };
+    ros::Timer timer = ros_node.createTimer(ros::Duration(0.5), callback);
 
-    while (ros::ok()) {
-        const int res = node.spin(uavcan::MonotonicDuration::getInfinite());
-        if (res < 0) {
-            ROS_ERROR("Transient failure or shutdown: %d", res);
-        }
-    }
-    */
     ros::spin();
 
     return 0;
