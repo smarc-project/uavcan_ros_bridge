@@ -6,6 +6,13 @@
 #include <ros/ros.h>
 
 namespace uav_to_ros {
+
+ros::Time convert_timestamp(const uavcan::Timestamp& uav_time)
+{
+    ros::Time ros_time;
+    ros_time.fromNSec(1000*uint64_t(uav_time.usec));
+    return ros_time;
+}
  
 template <typename UAVMSG, typename ROSMSG>
 bool convert(const UAVMSG& uav_msg, ROSMSG& ros_msg)
@@ -49,6 +56,14 @@ public:
 }
 
 namespace ros_to_uav {
+
+uavcan::Timestamp convert_timestamp(const ros::Time& ros_time)
+{
+    uavcan::Timestamp uav_time;
+    uint64_t nsec = ros_time.toNSec();
+    uav_time.usec = nsec / 1000;
+    return uav_time;
+}
 
 template <typename ROSMSG, typename UAVMSG>
 bool convert(const ROSMSG& ros_msg, UAVMSG& uav_msg)
