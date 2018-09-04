@@ -134,6 +134,10 @@ add_library(uav_to_ros_imu
   src/uav_to_ros/imu.cpp
 )
 
+add_library(uav_to_ros_gps_fix
+  src/uav_to_ros/gps_fix.cpp
+)
+
 add_library(ros_to_uav_command
   src/ros_to_uav/command.cpp
 )
@@ -163,6 +167,7 @@ add_executable(ros_to_uavcan_bridge src/ros_to_uavcan_bridge.cpp)
 target_link_libraries(uavcan_to_ros_bridge
   uavcan_platform_linux
   uav_to_ros_imu
+  uav_to_ros_gps_fix
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   rt
