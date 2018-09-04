@@ -150,6 +150,10 @@ add_library(ros_to_uav_command
   src/ros_to_uav/command.cpp
 )
 
+add_library(ros_to_uav_rpm_command
+  src/ros_to_uav/rpm_command.cpp
+)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -186,6 +190,7 @@ target_link_libraries(uavcan_to_ros_bridge
 target_link_libraries(ros_to_uavcan_bridge
   uavcan_platform_linux
   ros_to_uav_command
+  ros_to_uav_rpm_command
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   #uavcan_dsdlc
