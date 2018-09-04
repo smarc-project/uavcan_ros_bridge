@@ -20,7 +20,7 @@ roslaunch uavcan_ros_bridge bridge.launch
 You can add new headers for [ros to uavcan](https://gitr.sys.kth.se/smarc-project/sam_drivers/tree/master/uavcan_ros_bridge/include/uavcan_ros_bridge/ros_to_uav)
 and [uavcan to ros](https://gitr.sys.kth.se/smarc-project/sam_drivers/tree/master/uavcan_ros_bridge/include/uavcan_ros_bridge/uav_to_ros)
 with corresponding implementations in the [src folder](https://gitr.sys.kth.se/smarc-project/sam_drivers/tree/master/uavcan_ros_bridge/src). An example implementation for an IMU might look like this:
-```
+```cpp
 template <>
 bool convert(const uavcan::equipment::ahrs::RawIMU& uav_msg, sensor_msgs::Imu& ros_msg)
 {
