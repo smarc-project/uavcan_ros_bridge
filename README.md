@@ -38,6 +38,8 @@ where `uavcan_command` and `uavcan_imu` are the ros topics being subscribed to a
 
 ### ROS to UAVCAN
 * `std_msgs/Float32` to `uavcan.equipment.actuator.ArrayCommand` on ros topic `/uavcan_command`
+* `std_msgs/Int32` to `uavcan.equipment.esc.RPMCommand` on ros topic `/ros_to_uavcan_bridge_node/rpm_command`
+
 
 ### UAVCAN to ROS
 * `uavcan.equipment.ahrs.RawIMU` to `sensor_msgs/Imu` on ros topic `/uavcan_imu`
