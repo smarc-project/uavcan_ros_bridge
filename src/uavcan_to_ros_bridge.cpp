@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <unistd.h>
+#include <signal.h>
 #include <uavcan/uavcan.hpp>
 
 #include <uavcan_ros_bridge/uavcan_ros_bridge.h>
@@ -39,9 +40,9 @@ int main(int argc, char** argv)
      * if the node is running. Note that all dependent objects always keep a reference to the node object.
      */
     const int node_start_res = uav_node.start();
-    if (node_start_res < 0)
-    {
-        throw std::runtime_error("Failed to start the node; error: " + std::to_string(node_start_res));
+    if (node_start_res < 0) {
+        ROS_ERROR("Failed to start the node; error: %d", node_start_res);
+        exit(0);
     }
 
     ros::NodeHandle pn("~");
@@ -54,6 +55,7 @@ int main(int argc, char** argv)
      * Running the node.
      */
     uav_node.setModeOperational();
+    signal(SIGINT, [] (int) { ros::shutdown(); });
 
     while (ros::ok()) {
         /*

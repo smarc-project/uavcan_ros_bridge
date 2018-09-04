@@ -37,9 +37,9 @@ int main(int argc, char** argv)
      * if the node is running. Note that all dependent objects always keep a reference to the node object.
      */
     const int node_start_res = uav_node.start();
-    if (node_start_res < 0)
-    {
-        throw std::runtime_error("Failed to start the node; error: " + std::to_string(node_start_res));
+    if (node_start_res < 0) {
+        ROS_ERROR("Failed to start the node; error: %d", node_start_res);
+        exit(0);
     }
 
     ros::NodeHandle pn("~");
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
      */
     uav_node.setModeOperational();
 
-    std::function<void (const ros::TimerEvent&)> callback = [&] (const ros::TimerEvent& event) {
+    std::function<void (const ros::TimerEvent&)> callback = [&] (const ros::TimerEvent&) {
         // Announce that the uav node is alive and well
         uav_node.spinOnce();
     };
