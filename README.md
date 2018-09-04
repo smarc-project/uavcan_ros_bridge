@@ -41,3 +41,5 @@ where `uavcan_command` and `uavcan_imu` are the ros topics being subscribed to a
 
 ### UAVCAN to ROS
 * `uavcan.equipment.ahrs.RawIMU` to `sensor_msgs/Imu` on ros topic `/uavcan_imu`
+* `uavcan.equipment.gnss.Fix` to `sensor_msgs/NavSatFix` on ros topic `/uavcan_to_ros_bridge_node/gps_fix`
+* `uavcan.equipment.power.BatteryInfo` to `sensor_msgs/BatteryState` on ros topic `/uavcan_to_ros_bridge_node/battery_state`
