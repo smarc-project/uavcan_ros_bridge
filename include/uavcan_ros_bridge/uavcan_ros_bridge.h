@@ -17,7 +17,8 @@ ros::Time convert_timestamp(const uavcan::Timestamp& uav_time)
 template <typename UAVMSG, typename ROSMSG>
 bool convert(const UAVMSG& uav_msg, ROSMSG& ros_msg)
 {
-    ROS_WARN("Can't find conversion for uavcan type %s", uav_msg.getDataTypeFullName());
+    //ROS_WARN("Can't find conversion for uavcan type %s", uav_msg.getDataTypeFullName());
+    static_assert(sizeof(UAVMSG) == -1 || sizeof(ROSMSG) == -1, "ERROR: You need to supply a convert specialization for the UAVCAN -> ROS msg types provided");
     return false;
 }
 
@@ -68,7 +69,8 @@ uavcan::Timestamp convert_timestamp(const ros::Time& ros_time)
 template <typename ROSMSG, typename UAVMSG>
 bool convert(const ROSMSG& ros_msg, UAVMSG& uav_msg)
 {
-    ROS_WARN("Can't find conversion for uavcan type %s", uav_msg.getDataTypeFullName());
+    //ROS_WARN("Can't find conversion for uavcan type %s", uav_msg.getDataTypeFullName());
+    static_assert(sizeof(UAVMSG) == -1 || sizeof(ROSMSG) == -1, "ERROR: You need to supply a convert specialization for the ROS -> UAVCAN msg types provided");
     return false;
 }
 
