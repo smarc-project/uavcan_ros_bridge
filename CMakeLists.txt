@@ -142,6 +142,10 @@ add_library(uav_to_ros_battery_state
   src/uav_to_ros/battery_state.cpp
 )
 
+add_library(uav_to_ros_magnetic_field
+  src/uav_to_ros/magnetic_field.cpp
+)
+
 add_library(ros_to_uav_command
   src/ros_to_uav/command.cpp
 )
@@ -173,6 +177,7 @@ target_link_libraries(uavcan_to_ros_bridge
   uav_to_ros_imu
   uav_to_ros_gps_fix
   uav_to_ros_battery_state
+  uav_to_ros_magnetic_field
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   rt

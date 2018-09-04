@@ -8,6 +8,7 @@
 #include <uavcan_ros_bridge/uav_to_ros/imu.h>
 #include <uavcan_ros_bridge/uav_to_ros/gps_fix.h>
 #include <uavcan_ros_bridge/uav_to_ros/battery_state.h>
+#include <uavcan_ros_bridge/uav_to_ros/magnetic_field.h>
 
 extern uavcan::ICanDriver& getCanDriver();
 extern uavcan::ISystemClock& getSystemClock();
@@ -47,6 +48,7 @@ int main(int argc, char** argv)
     uav_to_ros::ConversionServer<uavcan::equipment::ahrs::RawIMU, sensor_msgs::Imu> imu_server(uav_node, pn, "imu");
     uav_to_ros::ConversionServer<uavcan::equipment::gnss::Fix, sensor_msgs::NavSatFix> gps_server(uav_node, pn, "gps_fix");
     uav_to_ros::ConversionServer<uavcan::equipment::power::BatteryInfo, sensor_msgs::BatteryState> battery_server(uav_node, pn, "battery_state");
+    uav_to_ros::ConversionServer<uavcan::equipment::ahrs::MagneticFieldStrength, sensor_msgs::MagneticField> magnetic_server(uav_node, pn, "magnetic_field");
 
     /*
      * Running the node.
