@@ -7,6 +7,7 @@
 #include <uavcan_ros_bridge/uavcan_ros_bridge.h>
 #include <uavcan_ros_bridge/ros_to_uav/command.h>
 #include <uavcan_ros_bridge/ros_to_uav/rpm_command.h>
+#include <uavcan_ros_bridge/ros_to_uav/array_command.h>
 
 extern uavcan::ICanDriver& getCanDriver();
 extern uavcan::ISystemClock& getSystemClock();
@@ -45,6 +46,7 @@ int main(int argc, char** argv)
     ros::NodeHandle pn("~");
     ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, std_msgs::Float32> command_server(uav_node, pn, "command");
     ros_to_uav::ConversionServer<uavcan::equipment::esc::RPMCommand, std_msgs::Int32> rpm_server(uav_node, pn, "rpm_command");
+    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::ArrayCommand> array_server(uav_node, pn, "array_command");
 
     /*
      * Running the node.

@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  sam_msgs
 )
 
 find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
@@ -154,6 +155,10 @@ add_library(ros_to_uav_rpm_command
   src/ros_to_uav/rpm_command.cpp
 )
 
+add_library(ros_to_uav_array_command
+  src/ros_to_uav/array_command.cpp
+)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -173,7 +178,7 @@ add_executable(ros_to_uavcan_bridge src/ros_to_uavcan_bridge.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(ros_to_uavcan_bridge ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(uavcan_to_ros_bridge
@@ -191,6 +196,7 @@ target_link_libraries(ros_to_uavcan_bridge
   uavcan_platform_linux
   ros_to_uav_command
   ros_to_uav_rpm_command
+  ros_to_uav_array_command
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   #uavcan_dsdlc
