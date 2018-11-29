@@ -8,6 +8,8 @@
 #include <uavcan_ros_bridge/ros_to_uav/command.h>
 #include <uavcan_ros_bridge/ros_to_uav/rpm_command.h>
 #include <uavcan_ros_bridge/ros_to_uav/array_command.h>
+#include <uavcan_ros_bridge/ros_to_uav/percent_stamped.h>
+#include <uavcan_ros_bridge/ros_to_uav/ballast_angles.h>
 
 extern uavcan::ICanDriver& getCanDriver();
 extern uavcan::ISystemClock& getSystemClock();
@@ -47,6 +49,9 @@ int main(int argc, char** argv)
     ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, std_msgs::Float32> command_server(uav_node, pn, "command");
     ros_to_uav::ConversionServer<uavcan::equipment::esc::RPMCommand, std_msgs::Int32> rpm_server(uav_node, pn, "rpm_command");
     ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::ArrayCommand> array_server(uav_node, pn, "array_command");
+    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::PercentStamped> vbs_server(uav_node, pn, "vbs_command", 13);
+    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::PercentStamped> tcg_server(uav_node, pn, "tcg_command", 14);
+    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::BallastAngles> lcg_server(uav_node, pn, "lcg_command", 15);
 
     /*
      * Running the node.

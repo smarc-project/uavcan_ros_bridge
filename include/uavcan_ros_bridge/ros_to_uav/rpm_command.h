@@ -7,6 +7,7 @@
 
 namespace ros_to_uav {
 
+// TODO: convert ros msg to sam_msgs/ThrusterRPMs
 template <>
 bool convert(const std_msgs::Int32& ros_msg, uavcan::equipment::esc::RPMCommand& uav_msg);
 

@@ -159,6 +159,14 @@ add_library(ros_to_uav_array_command
   src/ros_to_uav/array_command.cpp
 )
 
+add_library(ros_to_uav_percent_stamped
+  src/ros_to_uav/percent_stamped.cpp
+)
+
+add_library(ros_to_uav_ballast_angles
+  src/ros_to_uav/ballast_angles.cpp
+)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -197,6 +205,8 @@ target_link_libraries(ros_to_uavcan_bridge
   ros_to_uav_command
   ros_to_uav_rpm_command
   ros_to_uav_array_command
+  ros_to_uav_percent_stamped
+  ros_to_uav_ballast_angles
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   #uavcan_dsdlc

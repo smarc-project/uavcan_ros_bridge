@@ -15,7 +15,7 @@ ros::Time convert_timestamp(const uavcan::Timestamp& uav_time)
 }
  
 template <typename UAVMSG, typename ROSMSG>
-bool convert(const UAVMSG& uav_msg, ROSMSG& ros_msg)
+bool convert(const UAVMSG&, ROSMSG&)
 {
     //ROS_WARN("Can't find conversion for uavcan type %s", uav_msg.getDataTypeFullName());
     static_assert(sizeof(UAVMSG) == -1 || sizeof(ROSMSG) == -1, "ERROR: You need to supply a convert specialization for the UAVCAN -> ROS msg types provided");
@@ -67,11 +67,17 @@ uavcan::Timestamp convert_timestamp(const ros::Time& ros_time)
 }
 
 template <typename ROSMSG, typename UAVMSG>
-bool convert(const ROSMSG& ros_msg, UAVMSG& uav_msg)
+bool convert(const ROSMSG&, UAVMSG&)
 {
     //ROS_WARN("Can't find conversion for uavcan type %s", uav_msg.getDataTypeFullName());
     static_assert(sizeof(UAVMSG) == -1 || sizeof(ROSMSG) == -1, "ERROR: You need to supply a convert specialization for the ROS -> UAVCAN msg types provided");
     return false;
+}
+
+template <typename ROSMSG, typename UAVMSG>
+bool convert(const ROSMSG& ros_msg, UAVMSG& uav_msg, unsigned char)
+{
+    return convert(ros_msg, uav_msg);
 }
 
 template <typename UAVMSG, typename ROSMSG, unsigned NodeMemoryPoolSize=16384>
@@ -81,8 +87,9 @@ public:
 
     uavcan::Publisher<UAVMSG> uav_pub;
     ros::Subscriber ros_sub;
+    unsigned char uid;
 
-    ConversionServer(UavNode& uav_node, ros::NodeHandle& ros_node, const std::string& ros_topic) : uav_pub(uav_node)
+    ConversionServer(UavNode& uav_node, ros::NodeHandle& ros_node, const std::string& ros_topic, unsigned char uid=0) : uav_pub(uav_node), uid(uid)
     {
         const int uav_pub_init_res = uav_pub.init();
         if (uav_pub_init_res < 0) {
@@ -94,7 +101,7 @@ public:
     void conversion_callback(const ROSMSG& ros_msg)
     {
         UAVMSG uav_msg;
-        bool success = convert(ros_msg, uav_msg);
+        bool success = convert(ros_msg, uav_msg, uid);
         if (success) {
             const int pub_res = uav_pub.broadcast(uav_msg);
             if (pub_res < 0) {
