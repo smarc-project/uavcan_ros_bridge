@@ -7,6 +7,9 @@
     <param name="uav_node_id" value="$(arg subscriber_uav_node_id)"/>
     <remap from="~command" to="uavcan_command"/>
     <remap from="~array_command" to="uavcan_array_command"/>
+    <remap from="~vbs_command" to="uavcan_vbs_command"/>
+    <remap from="~tcg_command" to="uavcan_tcg_command"/>
+    <remap from="~lcg_command" to="uavcan_lcg_command"/>
   </node>
 
   <node name="uavcan_to_ros_bridge_node" pkg="uavcan_ros_bridge" type="uavcan_to_ros_bridge" respawn="false" output="screen">
