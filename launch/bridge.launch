@@ -15,6 +15,8 @@
   <node name="uavcan_to_ros_bridge_node" pkg="uavcan_ros_bridge" type="uavcan_to_ros_bridge" respawn="false" output="screen">
     <param name="uav_node_id" value="$(arg publisher_uav_node_id)"/>
     <remap from="~imu" to="uavcan_imu"/>
+    <remap from="~pressure1" to="uavcan_pressure2"/>
+    <remap from="~pressure2" to="uavcan_pressure2"/>
   </node>
 
 </launch>

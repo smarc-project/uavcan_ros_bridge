@@ -22,35 +22,52 @@ bool convert(const UAVMSG&, ROSMSG&)
     return false;
 }
 
+template <typename UAVMSG, typename ROSMSG>
+bool convert(const uavcan::ReceivedDataStructure<UAVMSG>& uav_msg, ROSMSG& ros_msg, unsigned char uid)
+{
+    uavcan::NodeID node_id = uav_msg.getSrcNodeID();
+    if (uid == 255 || uid == node_id.get()) {
+        return convert((const UAVMSG&)uav_msg, ros_msg);
+    }
+    return false;
+}
+
 template <typename UAVMSG, typename ROSMSG, unsigned NodeMemoryPoolSize=16384>
 class ConversionServer {
 public:
+    typedef uavcan::ReceivedDataStructure<UAVMSG> ReceivedDataStructure;
     typedef uavcan::Node<NodeMemoryPoolSize> UavNode;
     typedef uavcan::MethodBinder<ConversionServer*, void (ConversionServer::*)(const UAVMSG&) const> UavMsgCallbackBinder;
+    typedef uavcan::MethodBinder<ConversionServer*, void (ConversionServer::*)(const ReceivedDataStructure&) const> UavMsgExtendedBinder;
 
-    uavcan::Subscriber<UAVMSG, UavMsgCallbackBinder> uav_sub;
+    //uavcan::Subscriber<UAVMSG, UavMsgCallbackBinder> uav_sub;
+    uavcan::Subscriber<UAVMSG, UavMsgExtendedBinder> uav_sub;
     ros::Publisher ros_pub;
+    unsigned char uid;
 
-    ConversionServer(UavNode& uav_node, ros::NodeHandle& ros_node, const std::string& ros_topic) : uav_sub(uav_node)
+    ConversionServer(UavNode& uav_node, ros::NodeHandle& ros_node, const std::string& ros_topic, unsigned char uid=255) : uav_sub(uav_node), uid(uid)
     {
         ros_pub = ros_node.advertise<ROSMSG>(ros_topic, 10);
 
-        const int uav_sub_start_res = uav_sub.start(UavMsgCallbackBinder(this, &ConversionServer::conversion_callback));
+        //const int uav_sub_start_res = uav_sub.start(UavMsgCallbackBinder(this, &ConversionServer::conversion_callback));
+        const int uav_sub_start_res = uav_sub.start(UavMsgExtendedBinder(this, &ConversionServer::conversion_callback));
         if (uav_sub_start_res < 0) {
             ROS_ERROR("Failed to start the uav subscriber, error: %d", uav_sub_start_res);
         }
     }
 
-    void conversion_callback(const UAVMSG& uav_msg) const
+    void conversion_callback(const ReceivedDataStructure& uav_msg) const
     {
         ROSMSG ros_msg;
-        bool success = convert(uav_msg, ros_msg);
+        bool success = convert(uav_msg, ros_msg, uid);
         if (success) {
             ros_pub.publish(ros_msg);
         }
+        /*
         else {
             ROS_WARN("There was an error trying to convert uavcan type %s", uav_msg.getDataTypeFullName());
         }
+        */
     }
 };
 
