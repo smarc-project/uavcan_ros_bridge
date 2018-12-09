@@ -12,15 +12,15 @@
 #include <uavcan_ros_bridge/uav_to_ros/magnetic_field.h>
 #include <uavcan_ros_bridge/uav_to_ros/pressure.h>
 
-extern uavcan::ICanDriver& getCanDriver();
+extern uavcan::ICanDriver& getCanDriver(const std::string&);
 extern uavcan::ISystemClock& getSystemClock();
 
 constexpr unsigned NodeMemoryPoolSize = 16384;
 typedef uavcan::Node<NodeMemoryPoolSize> Node;
 
-static Node& getNode()
+static Node& getNode(const std::string& can_interface)
 {
-    static Node node(getCanDriver(), getSystemClock());
+    static Node node(getCanDriver(can_interface), getSystemClock());
     return node;
 }
 
@@ -30,9 +30,11 @@ int main(int argc, char** argv)
     ros::NodeHandle ros_node;
 
     int self_node_id;
+    std::string can_interface;
     ros::param::param<int>("~uav_node_id", self_node_id, 114);
+    ros::param::param<std::string>("~uav_can_interface", can_interface, "can0");
 
-    auto& uav_node = getNode();
+    auto& uav_node = getNode(can_interface);
     uav_node.setNodeID(self_node_id);
     uav_node.setName("smarc.sam.uavcan_bridge.subscriber");
 
