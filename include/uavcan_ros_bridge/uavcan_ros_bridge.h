@@ -97,6 +97,20 @@ bool convert(const ROSMSG& ros_msg, UAVMSG& uav_msg, unsigned char)
     return convert(ros_msg, uav_msg);
 }
 
+template <typename ROSREQ, typename UAVREQ>
+bool convert_request(const ROSREQ&, UAVREQ&)
+{
+    static_assert(sizeof(UAVREQ) == -1 || sizeof(ROSREQ) == -1, "ERROR: You need to supply a convert specialization for the ROS -> UAVCAN service request");
+    return false;
+}
+
+template <typename UAVRES, typename ROSRES>
+bool convert_response(const UAVRES&, ROSRES&)
+{
+    static_assert(sizeof(UAVRES) == -1 || sizeof(ROSRES) == -1, "ERROR: You need to supply a convert specialization for the UAVCAN -> ROS service response");
+    return false;
+}
+
 template <typename UAVMSG, typename ROSMSG, unsigned NodeMemoryPoolSize=16384>
 class ConversionServer {
 public:
@@ -128,6 +142,66 @@ public:
         else {
             ROS_WARN("There was an error trying to convert uavcan type %s", uav_msg.getDataTypeFullName());
         }
+    }
+};
+
+template <typename UAVSRV, typename ROSSRV, unsigned NodeMemoryPoolSize=16384>
+class ServiceConversionServer {
+public:
+    typedef uavcan::Node<NodeMemoryPoolSize> UavNode;
+
+    ros::ServiceServer ros_service;
+	UavNode& uav_node;
+	uavcan::ServiceClient<UAVSRV> uav_client;
+
+    ServiceConversionServer(UavNode& uav_node, ros::NodeHandle& ros_node, const std::string& ros_service_name) : uav_node(uav_node), uav_client(uav_node) //, node_id(node_id)
+    {
+		const int uav_client_init_res = uav_client.init();
+		if (uav_client_init_res < 0) {
+            ROS_ERROR("Failed to start the uav publisher, error: %d, type: %s", uav_client_init_res, UAVSRV::getDataTypeFullName());
+		}
+		uav_client.setRequestTimeout(uavcan::MonotonicDuration::fromMSec(200));
+		uav_client.setPriority(uavcan::TransferPriority::OneHigherThanLowest);
+
+		ros_service = ros_node.advertiseService(ros_service_name, &ServiceConversionServer::service_callback, this);
+    }
+
+    bool service_callback(typename ROSSRV::Request& ros_req, typename ROSSRV::Response& ros_res)
+    {
+        typename UAVSRV::Request uav_req;
+        bool success = convert_request(ros_req, uav_req);
+        if (!success) {
+            ROS_WARN("There was an error trying to convert uavcan service %s", UAVSRV::getDataTypeFullName());
+            return false;
+        }
+
+		uav_client.setCallback([&](const uavcan::ServiceCallResult<UAVSRV>& uav_res) {
+            if (uav_res.isSuccessful()) {
+                success = convert_response((const typename UAVSRV::Response&)uav_res.getResponse(), ros_res);
+            }
+            else {
+                ROS_WARN("There was an error call the uavcan service %s on node id %d", UAVSRV::getDataTypeFullName(), static_cast<int>(uav_res.getCallID().server_node_id.get()));
+                success = false;
+			}
+        });
+
+        const int uav_call_res = uav_client.call(ros_req.node_id, uav_req);
+		if (uav_call_res < 0) {
+            ROS_WARN("Unable to perform service call: %d", uav_call_res);
+            return false;
+		}
+
+        uav_node.setModeOperational();
+        while (uav_client.hasPendingCalls()) {
+            const int res = uav_node.spin(uavcan::MonotonicDuration::fromMSec(10));
+            if (res < 0) {
+                ROS_WARN("Transient failure: %d", res);
+                success = false;
+                break;
+            }
+        }
+
+        return success;
     }
 };
 

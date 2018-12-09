@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   std_msgs
   sam_msgs
+  message_generation
+  message_runtime
 )
 
 find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
@@ -53,18 +55,16 @@ find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  UavcanNodeStatus.msg
+)
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  UavcanGetNodeInfo.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -74,10 +74,10 @@ find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   sensor_msgs#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -171,6 +171,10 @@ add_library(ros_to_uav_ballast_angles
   src/ros_to_uav/ballast_angles.cpp
 )
 
+add_library(ros_to_uav_uavcan_node_info
+  src/ros_to_uav/uavcan_node_info.cpp
+)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -181,6 +185,7 @@ add_library(ros_to_uav_ballast_angles
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(uavcan_to_ros_bridge src/uavcan_to_ros_bridge.cpp)
 add_executable(ros_to_uavcan_bridge src/ros_to_uavcan_bridge.cpp)
+add_executable(ros_to_uavcan_services src/ros_to_uavcan_services.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -193,6 +198,7 @@ add_executable(ros_to_uavcan_bridge src/ros_to_uavcan_bridge.cpp)
 add_dependencies(ros_to_uav_array_command ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_percent_stamped ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_ballast_angles ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_to_uav_uavcan_node_info ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(uavcan_to_ros_bridge
@@ -214,6 +220,15 @@ target_link_libraries(ros_to_uavcan_bridge
   ros_to_uav_array_command
   ros_to_uav_percent_stamped
   ros_to_uav_ballast_angles
+  ${catkin_LIBRARIES}
+  ${UAVCAN_LIB}
+  #uavcan_dsdlc
+  rt
+)
+
+target_link_libraries(ros_to_uavcan_services
+  uavcan_platform_linux
+  ros_to_uav_uavcan_node_info
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   #uavcan_dsdlc
