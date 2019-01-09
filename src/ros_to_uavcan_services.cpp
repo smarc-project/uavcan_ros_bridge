@@ -5,11 +5,7 @@
 #include <uavcan/uavcan.hpp>
 
 #include <uavcan_ros_bridge/uavcan_ros_bridge.h>
-#include <uavcan_ros_bridge/ros_to_uav/command.h>
-#include <uavcan_ros_bridge/ros_to_uav/rpm_command.h>
-#include <uavcan_ros_bridge/ros_to_uav/array_command.h>
-#include <uavcan_ros_bridge/ros_to_uav/percent_stamped.h>
-#include <uavcan_ros_bridge/ros_to_uav/ballast_angles.h>
+#include <uavcan_ros_bridge/ros_to_uav/uavcan_node_info.h>
 
 extern uavcan::ICanDriver& getCanDriver(const std::string&);
 extern uavcan::ISystemClock& getSystemClock();
@@ -25,17 +21,17 @@ static Node& getNode(const std::string& can_interface)
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "ros_to_uavcan_bridge_node");
+    ros::init(argc, argv, "ros_to_uavcan_services_node");
     ros::NodeHandle ros_node;
 
     int self_node_id;
     std::string can_interface;
-    ros::param::param<int>("~uav_node_id", self_node_id, 113);
+    ros::param::param<int>("~uav_node_id", self_node_id, 115);
     ros::param::param<std::string>("~uav_can_interface", can_interface, "can0");
     
     auto& uav_node = getNode(can_interface);
     uav_node.setNodeID(self_node_id);
-    uav_node.setName("smarc.sam.uavcan_bridge.publisher");
+    uav_node.setName("smarc.sam.uavcan_bridge.service_caller");
 
     /*
      * Dependent objects (e.g. publishers, subscribers, servers, callers, timers, ...) can be initialized only
@@ -48,12 +44,7 @@ int main(int argc, char** argv)
     }
 
     ros::NodeHandle pn("~");
-    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, std_msgs::Float32> command_server(uav_node, pn, "command");
-    ros_to_uav::ConversionServer<uavcan::equipment::esc::RPMCommand, std_msgs::Int32> rpm_server(uav_node, pn, "rpm_command");
-    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::ArrayCommand> array_server(uav_node, pn, "array_command");
-    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::PercentStamped> vbs_server(uav_node, pn, "vbs_command", 13);
-    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::PercentStamped> lcg_server(uav_node, pn, "lcg_command", 14);
-    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::BallastAngles> tcg_server(uav_node, pn, "tcg_command", 15);
+    ros_to_uav::ServiceConversionServer<uavcan::protocol::GetNodeInfo, uavcan_ros_bridge::UavcanGetNodeInfo> node_info_server(uav_node, pn, "get_node_info");
 
     /*
      * Running the node.
@@ -66,7 +57,10 @@ int main(int argc, char** argv)
     };
     ros::Timer timer = ros_node.createTimer(ros::Duration(0.5), callback);
 
-    ros::spin();
+    ros::AsyncSpinner spinner(4); // Use 4 threads
+    spinner.start();
+    //ros::spin();
+    ros::waitForShutdown();
 
     return 0;
 }
