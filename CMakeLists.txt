@@ -19,6 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
 
+set(UAVCAN_DSDL_DEFINITIONS "/usr/local/share/uavcan/dsdl/uavcan") # For Linux, if the library is installed
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -115,6 +117,10 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
+add_custom_target(dsdlc libuavcan_dsdlc # If the library is installed
+                  "uavcan_ros_bridge" -I${UAVCAN_DSDL_DEFINITIONS}
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dsdl)
+
 ###########
 ## Build ##
 ###########
@@ -123,6 +129,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  dsdl/dsdlc_generated
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -149,6 +156,10 @@ add_library(uav_to_ros_magnetic_field
 
 add_library(uav_to_ros_pressure
   src/uav_to_ros/pressure.cpp
+)
+
+add_library(uav_to_ros_sensor_pressure
+  src/uav_to_ros/sensor_pressure.cpp
 )
 
 add_library(ros_to_uav_command
@@ -190,6 +201,7 @@ add_executable(ros_to_uavcan_bridge src/ros_to_uavcan_bridge.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
+add_dependencies(uav_to_ros_sensor_pressure dsdlc)
 add_dependencies(ros_to_uav_array_command ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_percent_stamped ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_ballast_angles ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -202,6 +214,7 @@ target_link_libraries(uavcan_to_ros_bridge
   uav_to_ros_battery_state
   uav_to_ros_magnetic_field
   uav_to_ros_pressure
+  uav_to_ros_sensor_pressure
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   rt

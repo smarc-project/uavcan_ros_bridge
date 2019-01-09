@@ -11,6 +11,7 @@
 #include <uavcan_ros_bridge/uav_to_ros/battery_state.h>
 #include <uavcan_ros_bridge/uav_to_ros/magnetic_field.h>
 #include <uavcan_ros_bridge/uav_to_ros/pressure.h>
+#include <uavcan_ros_bridge/uav_to_ros/sensor_pressure.h>
 
 extern uavcan::ICanDriver& getCanDriver();
 extern uavcan::ISystemClock& getSystemClock();
@@ -54,6 +55,9 @@ int main(int argc, char** argv)
     // NOTE: the last argument is the source node id numbers, these are example values
     uav_to_ros::ConversionServer<uavcan::equipment::air_data::StaticPressure, sensor_msgs::FluidPressure> pressure_server1(uav_node, pn, "pressure1", 91);
     uav_to_ros::ConversionServer<uavcan::equipment::air_data::StaticPressure, sensor_msgs::FluidPressure> pressure_server2(uav_node, pn, "pressure2", 93);
+
+    uav_to_ros::ConversionServer<uavcan_ros_bridge::SensorPressure, sensor_msgs::FluidPressure> sensor_pressure_server1(uav_node, pn, "sensor_pressure1", 1);
+    uav_to_ros::ConversionServer<uavcan_ros_bridge::SensorPressure, sensor_msgs::FluidPressure> sensor_pressure_server2(uav_node, pn, "sensor_pressure2", 2);
 
     /*
      * Running the node.
