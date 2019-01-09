@@ -22,10 +22,12 @@
     <remap from="~pressure2" to="uavcan_pressure2"/>
   </node>
 
+  <!--
   <node name="ros_to_uavcan_services_node" pkg="uavcan_ros_bridge" type="ros_to_uavcan_services" respawn="true" output="screen">
     <param name="uav_node_id" value="99"/>
     <param name="uav_can_interface" value="$(arg uav_can_interface)"/>
     <remap from="~get_node_info" to="uavcan_get_node_info"/>
   </node>
+  -->
 
 </launch>

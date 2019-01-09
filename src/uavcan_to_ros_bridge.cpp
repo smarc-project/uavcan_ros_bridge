@@ -39,6 +39,16 @@ int main(int argc, char** argv)
     uav_node.setNodeID(self_node_id);
     uav_node.setName("smarc.sam.uavcan_bridge.subscriber");
 
+     /*
+     * Configuring the Data Type IDs.
+     * See the server sources for details.
+     */
+    auto regist_result = uavcan::GlobalDataTypeRegistry::instance().registerDataType<uavcan_ros_bridge::SensorPressure>(243);
+    if (regist_result != uavcan::GlobalDataTypeRegistry::RegistrationResultOk) {
+        ROS_ERROR("Failed to register the data type: %d", regist_result);
+        exit(0);
+    }
+
     /*
      * Dependent objects (e.g. publishers, subscribers, servers, callers, timers, ...) can be initialized only
      * if the node is running. Note that all dependent objects always keep a reference to the node object.
