@@ -1,0 +1,6 @@
+#
+# Static pressure with device_id
+#
+
+uavcan.equipment.air_data.StaticPressure pressure
+uint8 device_id
