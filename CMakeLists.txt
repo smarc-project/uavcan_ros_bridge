@@ -118,7 +118,7 @@ catkin_package(
 )
 
 add_custom_target(dsdlc libuavcan_dsdlc # If the library is installed
-                  "uavcan_ros_bridge" -I${UAVCAN_DSDL_DEFINITIONS}
+                  "smarc_uavcan_messages" -I${UAVCAN_DSDL_DEFINITIONS}
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dsdl)
 
 ###########

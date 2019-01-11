@@ -3,7 +3,7 @@
 namespace uav_to_ros {
 
 template <>
-bool convert(const uavcan::ReceivedDataStructure<uavcan_ros_bridge::SensorPressure>& uav_msg, sensor_msgs::FluidPressure& ros_msg, unsigned char uid)
+bool convert(const uavcan::ReceivedDataStructure<smarc_uavcan_messages::SensorPressure>& uav_msg, sensor_msgs::FluidPressure& ros_msg, unsigned char uid)
 {
     if (uid != 255 && uav_msg.device_id != uid) {
         return false;

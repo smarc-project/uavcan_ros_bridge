@@ -43,11 +43,13 @@ int main(int argc, char** argv)
      * Configuring the Data Type IDs.
      * See the server sources for details.
      */
-    auto regist_result = uavcan::GlobalDataTypeRegistry::instance().registerDataType<uavcan_ros_bridge::SensorPressure>(243);
+    /*
+    auto regist_result = uavcan::GlobalDataTypeRegistry::instance().registerDataType<smarc_uavcan_messages::SensorPressure>(243);
     if (regist_result != uavcan::GlobalDataTypeRegistry::RegistrationResultOk) {
         ROS_ERROR("Failed to register the data type: %d", regist_result);
         exit(0);
     }
+    */
 
     /*
      * Dependent objects (e.g. publishers, subscribers, servers, callers, timers, ...) can be initialized only
@@ -68,8 +70,8 @@ int main(int argc, char** argv)
     uav_to_ros::ConversionServer<uavcan::equipment::air_data::StaticPressure, sensor_msgs::FluidPressure> pressure_server1(uav_node, pn, "pressure1", 91);
     uav_to_ros::ConversionServer<uavcan::equipment::air_data::StaticPressure, sensor_msgs::FluidPressure> pressure_server2(uav_node, pn, "pressure2", 93);
 
-    uav_to_ros::ConversionServer<uavcan_ros_bridge::SensorPressure, sensor_msgs::FluidPressure> sensor_pressure_server1(uav_node, pn, "sensor_pressure1", 1);
-    uav_to_ros::ConversionServer<uavcan_ros_bridge::SensorPressure, sensor_msgs::FluidPressure> sensor_pressure_server2(uav_node, pn, "sensor_pressure2", 2);
+    uav_to_ros::ConversionServer<smarc_uavcan_messages::SensorPressure, sensor_msgs::FluidPressure> sensor_pressure_server1(uav_node, pn, "sensor_pressure1", 1);
+    uav_to_ros::ConversionServer<smarc_uavcan_messages::SensorPressure, sensor_msgs::FluidPressure> sensor_pressure_server2(uav_node, pn, "sensor_pressure2", 2);
 
     /*
      * Running the node.
