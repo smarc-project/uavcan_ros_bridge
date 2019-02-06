@@ -53,8 +53,8 @@ int main(int argc, char** argv)
     ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::ArrayCommand> array_server(uav_node, pn, "array_command");
     ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::PercentStamped> vbs_server(uav_node, pn, "vbs_command", 13);
     ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::PercentStamped> lcg_server(uav_node, pn, "lcg_command", 14);
-    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::BallastAngles> tcg_server(uav_node, pn, "tcg_command1", 27);
-    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::BallastAngles> tcg_server(uav_node, pn, "tcg_command2", 28);
+    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::BallastAngles> tcg_server1(uav_node, pn, "tcg_command1", 27);
+    ros_to_uav::ConversionServer<uavcan::equipment::actuator::ArrayCommand, sam_msgs::BallastAngles> tcg_server2(uav_node, pn, "tcg_command2", 28);
 
     /*
      * Running the node.
