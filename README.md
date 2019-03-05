@@ -4,8 +4,11 @@ uavcan_ros_bridge
 ## Dependencies & building
 
 This package requires [libuavcan](https://github.com/UAVCAN/libuavcan) to be installed on the 
-computer. Follow the instructions on their website to install the library.
-
+computer. Follow the instructions on their website to install the library. Once done, go into
+the folder `/path/to/libuavcan/libuavcan/dsdl_compiler/pyuavcan/` and execute:
+```
+sudo python setup.py install
+```
 Then, simply put this project into a catkin workspace and run `catkin_make` to build everything.
 
 ## Usage
