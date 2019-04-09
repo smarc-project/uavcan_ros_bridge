@@ -162,6 +162,10 @@ add_library(uav_to_ros_sensor_pressure
   src/uav_to_ros/sensor_pressure.cpp
 )
 
+add_library(uav_to_ros_actuator_status
+  src/uav_to_ros/actuator_status.cpp
+)
+
 add_library(ros_to_uav_command
   src/ros_to_uav/command.cpp
 )
@@ -207,6 +211,7 @@ add_executable(ros_to_uavcan_services src/ros_to_uavcan_services.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(uav_to_ros_sensor_pressure dsdlc)
+add_dependencies(uav_to_ros_actuator_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_array_command ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_percent_stamped ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_ballast_angles ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -221,6 +226,7 @@ target_link_libraries(uavcan_to_ros_bridge
   uav_to_ros_magnetic_field
   uav_to_ros_pressure
   uav_to_ros_sensor_pressure
+  uav_to_ros_actuator_status
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   rt
