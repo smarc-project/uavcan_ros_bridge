@@ -14,7 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
-  sam_msgs
   message_generation
   message_runtime
 )
@@ -111,9 +110,19 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES uavcan_ros_bridge
-#  CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_msgs
+  INCLUDE_DIRS include dsdl/dsdlc_generated
+  LIBRARIES 
+    uav_to_ros_imu
+    uav_to_ros_gps_fix
+    uav_to_ros_battery_state
+    uav_to_ros_magnetic_field
+    uav_to_ros_pressure
+    uav_to_ros_sensor_pressure
+    ros_to_uav_command
+    ros_to_uav_rpm_command
+    ros_to_uav_array_command
+    ros_to_uav_uavcan_node_info
+  CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
 
@@ -162,9 +171,9 @@ add_library(uav_to_ros_sensor_pressure
   src/uav_to_ros/sensor_pressure.cpp
 )
 
-add_library(uav_to_ros_actuator_status
-  src/uav_to_ros/actuator_status.cpp
-)
+#add_library(uav_to_ros_actuator_status
+#  src/uav_to_ros/actuator_status.cpp
+#)
 
 add_library(ros_to_uav_command
   src/ros_to_uav/command.cpp
@@ -178,13 +187,13 @@ add_library(ros_to_uav_array_command
   src/ros_to_uav/array_command.cpp
 )
 
-add_library(ros_to_uav_percent_stamped
-  src/ros_to_uav/percent_stamped.cpp
-)
+#add_library(ros_to_uav_percent_stamped
+#  src/ros_to_uav/percent_stamped.cpp
+#)
 
-add_library(ros_to_uav_ballast_angles
-  src/ros_to_uav/ballast_angles.cpp
-)
+#add_library(ros_to_uav_ballast_angles
+#  src/ros_to_uav/ballast_angles.cpp
+#)
 
 add_library(ros_to_uav_uavcan_node_info
   src/ros_to_uav/uavcan_node_info.cpp
@@ -211,10 +220,10 @@ add_executable(ros_to_uavcan_services src/ros_to_uavcan_services.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(uav_to_ros_sensor_pressure dsdlc)
-add_dependencies(uav_to_ros_actuator_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(uav_to_ros_actuator_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_array_command ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(ros_to_uav_percent_stamped ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(ros_to_uav_ballast_angles ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(ros_to_uav_percent_stamped ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(ros_to_uav_ballast_angles ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_uavcan_node_info ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
@@ -226,7 +235,6 @@ target_link_libraries(uavcan_to_ros_bridge
   uav_to_ros_magnetic_field
   uav_to_ros_pressure
   uav_to_ros_sensor_pressure
-  uav_to_ros_actuator_status
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   rt
@@ -237,12 +245,11 @@ target_link_libraries(ros_to_uavcan_bridge
   ros_to_uav_command
   ros_to_uav_rpm_command
   ros_to_uav_array_command
-  ros_to_uav_percent_stamped
-  ros_to_uav_ballast_angles
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   #uavcan_dsdlc
   rt
+
 )
 
 target_link_libraries(ros_to_uavcan_services
@@ -269,18 +276,28 @@ target_link_libraries(ros_to_uavcan_services
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(TARGETS 
+    uav_to_ros_imu
+    uav_to_ros_gps_fix
+    uav_to_ros_battery_state
+    uav_to_ros_magnetic_field
+    uav_to_ros_pressure
+    uav_to_ros_sensor_pressure
+    ros_to_uav_command
+    ros_to_uav_rpm_command
+    ros_to_uav_array_command
+    ros_to_uav_uavcan_node_info
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN ".svn" EXCLUDE
+)
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
