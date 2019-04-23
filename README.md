@@ -1,6 +1,8 @@
 uavcan_ros_bridge
 =================
 
+Bridge for communication between ROS and the uavcan CAN-bus protocol
+
 ## Dependencies & building
 
 This package requires [libuavcan](https://github.com/UAVCAN/libuavcan) to be installed on the 
