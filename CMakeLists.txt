@@ -59,6 +59,7 @@ set(UAVCAN_DSDL_DEFINITIONS "/usr/local/share/uavcan/dsdl/uavcan") # For Linux, 
 add_message_files(
   FILES
   UavcanNodeStatus.msg
+  ESCStatus.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -119,6 +120,7 @@ catkin_package(
     uav_to_ros_magnetic_field
     uav_to_ros_pressure
     uav_to_ros_sensor_pressure
+    uav_to_ros_esc_status
     ros_to_uav_command
     ros_to_uav_rpm_command
     ros_to_uav_array_command
@@ -171,6 +173,10 @@ add_library(uav_to_ros_pressure
 
 add_library(uav_to_ros_sensor_pressure
   src/uav_to_ros/sensor_pressure.cpp
+)
+
+add_library(uav_to_ros_esc_status
+  src/uav_to_ros/esc_status.cpp
 )
 
 #add_library(uav_to_ros_actuator_status
@@ -226,6 +232,7 @@ add_executable(ros_to_uavcan_services src/ros_to_uavcan_services.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(uav_to_ros_sensor_pressure dsdlc)
+add_dependencies(uav_to_ros_esc_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #add_dependencies(uav_to_ros_actuator_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_array_command ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #add_dependencies(ros_to_uav_percent_stamped ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -242,6 +249,7 @@ target_link_libraries(uavcan_to_ros_bridge
   uav_to_ros_magnetic_field
   uav_to_ros_pressure
   uav_to_ros_sensor_pressure
+  uav_to_ros_esc_status
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   rt
@@ -291,6 +299,7 @@ install(TARGETS
     uav_to_ros_magnetic_field
     uav_to_ros_pressure
     uav_to_ros_sensor_pressure
+    uav_to_ros_esc_status
     ros_to_uav_command
     ros_to_uav_rpm_command
     ros_to_uav_array_command
