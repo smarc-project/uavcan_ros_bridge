@@ -6,6 +6,7 @@
 
 #include <uavcan_ros_bridge/uavcan_ros_bridge.h>
 #include <uavcan_ros_bridge/ros_to_uav/uavcan_node_info.h>
+#include <uavcan_ros_bridge/ros_to_uav/uavcan_transport_stats.h>
 
 extern uavcan::ICanDriver& getCanDriver(const std::string&);
 extern uavcan::ISystemClock& getSystemClock();
@@ -45,6 +46,7 @@ int main(int argc, char** argv)
 
     ros::NodeHandle pn("~");
     ros_to_uav::ServiceConversionServer<uavcan::protocol::GetNodeInfo, uavcan_ros_bridge::UavcanGetNodeInfo> node_info_server(uav_node, pn, "get_node_info");
+    ros_to_uav::ServiceConversionServer<uavcan::protocol::GetTransportStats, uavcan_ros_bridge::UavcanGetTransportStats> transport_stats_server(uav_node, pn, "get_transport_stats");
 
     /*
      * Running the node.
@@ -55,7 +57,7 @@ int main(int argc, char** argv)
         // Announce that the uav node is alive and well
         uav_node.spinOnce();
     };
-    ros::Timer timer = ros_node.createTimer(ros::Duration(0.5), callback);
+    ros::Timer timer = ros_node.createTimer(ros::Duration(2.), callback);
 
     ros::AsyncSpinner spinner(4); // Use 4 threads
     spinner.start();

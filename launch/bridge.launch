@@ -27,6 +27,7 @@
     <param name="uav_node_id" value="99"/>
     <param name="uav_can_interface" value="$(arg uav_can_interface)"/>
     <remap from="~get_node_info" to="uavcan_get_node_info"/>
+    <remap from="~get_transport_stats" to="uavcan_get_transport_stats"/>
   </node>
   -->
 
