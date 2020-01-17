@@ -4,6 +4,7 @@
 #include <uavcan/uavcan.hpp>
 #include <ros/console.h>
 #include <ros/ros.h>
+#include <std_srvs/SetBool.h>
 
 namespace uav_to_ros {
 
@@ -118,19 +119,42 @@ public:
 
     uavcan::Publisher<UAVMSG> uav_pub;
     ros::Subscriber ros_sub;
+    ros::ServiceServer ros_service;
     unsigned char uid;
+    bool running;
 
-    ConversionServer(UavNode& uav_node, ros::NodeHandle& ros_node, const std::string& ros_topic, unsigned char uid=0) : uav_pub(uav_node), uid(uid)
+    ConversionServer(UavNode& uav_node, ros::NodeHandle& ros_node, const std::string& ros_topic, unsigned char uid=0) : uav_pub(uav_node), uid(uid), running(true)
     {
         const int uav_pub_init_res = uav_pub.init();
         if (uav_pub_init_res < 0) {
             ROS_ERROR("Failed to start the uav publisher, error: %d, type: %s", uav_pub_init_res, UAVMSG::getDataTypeFullName());
         }
         ros_sub = ros_node.subscribe(ros_topic, 10, &ConversionServer::conversion_callback, this);
+        std::string service_name = ros_sub.getTopic(); // ros_topic;
+        std::replace(service_name.begin(), service_name.end(), '/', '_');
+        service_name = std::string("start_stop") + service_name;
+        ros_service = ros_node.advertiseService(service_name, &ConversionServer::start_stop, this);
+        ROS_INFO("Announcing service: %s", service_name.c_str());
+    }
+
+    bool start_stop(std_srvs::SetBool::Request& req, std_srvs::SetBool::Response& res)
+    {
+        running = req.data;
+        res.success = true;
+        if (!running) {
+            res.message = std::string("Stopping subscriber ") + ros_sub.getTopic();
+        }
+        else {
+            res.message = std::string("Starting subscriber ") + ros_sub.getTopic();
+        }
+        return true;
     }
 
     void conversion_callback(const ROSMSG& ros_msg)
     {
+        if (!running) {
+            return;
+        }
         UAVMSG uav_msg;
         bool success = convert(ros_msg, uav_msg, uid);
         if (success) {
