@@ -60,6 +60,7 @@ add_message_files(
   FILES
   UavcanNodeStatus.msg
   ESCStatus.msg
+  CircuitStatus.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -121,6 +122,7 @@ catkin_package(
     uav_to_ros_pressure
     uav_to_ros_sensor_pressure
     uav_to_ros_esc_status
+    uav_to_ros_circuit_status
     ros_to_uav_command
     ros_to_uav_rpm_command
     ros_to_uav_array_command
@@ -179,6 +181,10 @@ add_library(uav_to_ros_esc_status
   src/uav_to_ros/esc_status.cpp
 )
 
+add_library(uav_to_ros_circuit_status
+  src/uav_to_ros/circuit_status.cpp
+)
+
 #add_library(uav_to_ros_actuator_status
 #  src/uav_to_ros/actuator_status.cpp
 #)
@@ -233,6 +239,7 @@ add_executable(ros_to_uavcan_services src/ros_to_uavcan_services.cpp)
 ## same as for the library above
 add_dependencies(uav_to_ros_sensor_pressure dsdlc)
 add_dependencies(uav_to_ros_esc_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(uav_to_ros_circuit_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #add_dependencies(uav_to_ros_actuator_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_array_command ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #add_dependencies(ros_to_uav_percent_stamped ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -250,6 +257,7 @@ target_link_libraries(uavcan_to_ros_bridge
   uav_to_ros_pressure
   uav_to_ros_sensor_pressure
   uav_to_ros_esc_status
+  uav_to_ros_circuit_status
   ${catkin_LIBRARIES}
   ${UAVCAN_LIB}
   rt
@@ -300,6 +308,7 @@ install(TARGETS
     uav_to_ros_pressure
     uav_to_ros_sensor_pressure
     uav_to_ros_esc_status
+    uav_to_ros_circuit_status
     ros_to_uav_command
     ros_to_uav_rpm_command
     ros_to_uav_array_command
