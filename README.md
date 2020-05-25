@@ -13,7 +13,7 @@ git clone https://github.com/UAVCAN/libuavcan
 cd libuavcan
 git reset --hard 8913f14d11ceb558fdabc5cdbe1cc6a866ac4c67
 ```
-After this, follow the instructions on their website to install the library. Once done, go into
+After this, follow the instructions on the README in your local repo to install the library. Once done, go into
 the folder `/path/to/libuavcan/libuavcan/dsdl_compiler/pyuavcan/` and execute:
 ```
 sudo python setup.py install
