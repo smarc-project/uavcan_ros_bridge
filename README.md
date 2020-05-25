@@ -6,7 +6,14 @@ Bridge for communication between ROS and the uavcan CAN-bus protocol
 ## Dependencies & building
 
 This package requires [libuavcan](https://github.com/UAVCAN/libuavcan) to be installed on the 
-computer. Follow the instructions on their website to install the library. Once done, go into
+computer. Update: they seem to have got rid of the README so you need to go back to the commit we've been using:
+
+```
+git clone https://github.com/UAVCAN/libuavcan
+cd libuavcan
+git reset --hard 8913f14d11ceb558fdabc5cdbe1cc6a866ac4c67
+```
+After this, follow the instructions on their website to install the library. Once done, go into
 the folder `/path/to/libuavcan/libuavcan/dsdl_compiler/pyuavcan/` and execute:
 ```
 sudo python setup.py install
