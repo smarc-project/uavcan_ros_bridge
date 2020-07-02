@@ -5,7 +5,7 @@ namespace uav_to_ros {
 template <>
 bool convert(const uavcan::equipment::power::BatteryInfo& uav_msg, sensor_msgs::BatteryState& ros_msg)
 {
-    if (ros_msg.voltage != -1) {    // -1 indicates voltage is unknown
+    if (uav_msg.voltage != -1) {    // -1 indicates voltage is unknown
         ros_msg.charge = uav_msg.remaining_capacity_wh / uav_msg.voltage;
         ros_msg.capacity = uav_msg.full_charge_capacity_wh / uav_msg.voltage;
     } else {
