@@ -2,7 +2,7 @@
 #set(UAVCAN_DSDL_DEFINITIONS "${CATKIN_DEVEL_PREFIX}/../src/uavcan_ros_bridge/libuavcan/dsdl/uavcan")
 #set(DSDL_COMPILER "${CATKIN_DEVEL_PREFIX}/../src/uavcan_ros_bridge/libuavcan/libuavcan/dsdl_compiler/libuavcan_dsdlc")
 set(UAVCAN_DSDL_DEFINITIONS "${CMAKE_CURRENT_SOURCE_DIR}/../../uavcan_ros_bridge/libuavcan/dsdl/uavcan")
-set(DSDL_COMPILER "${CMAKE_CURRENT_SOURCE_DIR}/../../uavcan_ros_bridge/libuavcan/libuavcan/dsdl_compiler/libuavcan_dsdlc")
+set(DSDL_COMPILER libuavcan_dsdlc)
 
 # This is just a temporary fix because it does not exist when starting, maybe add a dummy dir in a fork of libuavcan 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../uavcan_ros_bridge/libuavcan/libuavcan/include/dsdlc_generated)
