@@ -7,8 +7,8 @@ jobs:
     strategy:
       matrix:
         env:
-          - {ROS_DISTRO: noetic, ROS_REPO: testing, UPSTREAM_WORKSPACE: 'uavcan_ros_bridge.rosinstall -uavcan_ros_bridge'}
-          - {ROS_DISTRO: noetic, ROS_REPO: main, UPSTREAM_WORKSPACE: 'uavcan_ros_bridge.rosinstall -uavcan_ros_bridge'}
+          - {ROS_DISTRO: noetic, ROS_REPO: testing, UPSTREAM_WORKSPACE: 'uavcan_ros_bridge.rosinstall -uavcan_ros_bridge', ADDITIONAL_DEBS: 'python'}
+          - {ROS_DISTRO: noetic, ROS_REPO: main, UPSTREAM_WORKSPACE: 'uavcan_ros_bridge.rosinstall -uavcan_ros_bridge', ADDITIONAL_DEBS: 'python'}
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v1
