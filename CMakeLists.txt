@@ -123,7 +123,7 @@ catkin_package(
     ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan_drivers/posix/include
     ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan_drivers/linux/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/dsdlc_generated
+    #${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/dsdlc_generated
   LIBRARIES 
     uavcan
     uav_to_ros_imu
