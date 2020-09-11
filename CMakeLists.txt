@@ -19,9 +19,11 @@ find_package(catkin REQUIRED COMPONENTS
   message_runtime
 )
 
-find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
+#find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
 
-set(UAVCAN_DSDL_DEFINITIONS "/usr/local/share/uavcan/dsdl/uavcan") # For Linux, if the library is installed
+#set(UAVCAN_DSDL_DEFINITIONS "/usr/local/share/uavcan/dsdl/uavcan") # For Linux, if the library is installed
+set(UAVCAN_DSDL_DEFINITIONS "${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/dsdl/uavcan")
+add_subdirectory(libuavcan)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -114,8 +116,13 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include dsdl/dsdlc_generated
+  INCLUDE_DIRS
+    include
+    dsdl/dsdlc_generated
+    ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/dsdlc_generated
   LIBRARIES 
+    uavcan
     uav_to_ros_imu
     uav_to_ros_gps_fix
     uav_to_ros_battery_state
@@ -131,9 +138,10 @@ catkin_package(
     ros_to_uav_uavcan_transport_stats
   CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_msgs
 #  DEPENDS system_lib
+  CFG_EXTRAS uavcan_ros_bridge-extras.cmake
 )
 
-add_custom_target(dsdlc libuavcan_dsdlc # If the library is installed
+add_custom_target(dsdlc ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/dsdl_compiler/libuavcan_dsdlc
                   "smarc_uavcan_messages" -I${UAVCAN_DSDL_DEFINITIONS}
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dsdl)
 
@@ -145,6 +153,8 @@ add_custom_target(dsdlc libuavcan_dsdlc # If the library is installed
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/
+  ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/dsdlc_generated
   dsdl/dsdlc_generated
   ${catkin_INCLUDE_DIRS}
 )
@@ -260,7 +270,8 @@ target_link_libraries(uavcan_to_ros_bridge
   uav_to_ros_esc_status
   uav_to_ros_circuit_status
   ${catkin_LIBRARIES}
-  ${UAVCAN_LIB}
+  #${UAVCAN_LIB}
+  uavcan
   rt
 )
 
@@ -270,7 +281,8 @@ target_link_libraries(ros_to_uavcan_bridge
   ros_to_uav_rpm_command
   ros_to_uav_array_command
   ${catkin_LIBRARIES}
-  ${UAVCAN_LIB}
+  #${UAVCAN_LIB}
+  uavcan
   #uavcan_dsdlc
   rt
 
@@ -281,7 +293,8 @@ target_link_libraries(ros_to_uavcan_services
   ros_to_uav_uavcan_node_info
   ros_to_uav_uavcan_transport_stats
   ${catkin_LIBRARIES}
-  ${UAVCAN_LIB}
+  #${UAVCAN_LIB}
+  uavcan
   #uavcan_dsdlc
   rt
 )

@@ -1,0 +1,3 @@
+
+set(UAVCAN_DSDL_DEFINITIONS "${CATKIN_DEVEL_PREFIX}/../src/uavcan_ros_bridge/libuavcan/dsdl/uavcan")
+set(DSDL_COMPILER "${CATKIN_DEVEL_PREFIX}/../src/uavcan_ros_bridge/libuavcan/libuavcan/dsdl_compiler/libuavcan_dsdlc")
