@@ -1,24 +1,20 @@
 uavcan_ros_bridge
 =================
+![CI](https://github.com/smarc-project/uavcan_ros_bridge/workflows/CI/badge.svg?branch=noetic-devel) [![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 Bridge for communication between ROS and the uavcan CAN-bus protocol
 
 ## Dependencies & building
 
-This package requires [libuavcan](https://github.com/UAVCAN/libuavcan) to be installed on the 
-computer. Update: they seem to have got rid of the README so you need to go back to the commit we've been using:
-
+After cloning, execute the following command in the cloned repo:
 ```
-git clone https://github.com/UAVCAN/libuavcan
-cd libuavcan
-git reset --hard 8913f14d11ceb558fdabc5cdbe1cc6a866ac4c67
+git submodule update --init --recursive
 ```
-After this, follow the instructions on the README in your local repo to install the library. Once done, go into
-the folder `/path/to/libuavcan/libuavcan/dsdl_compiler/pyuavcan/` and execute:
+Once done, go into the folder `libuavcan/libuavcan/dsdl_compiler/pyuavcan/` and execute:
 ```
 sudo python setup.py install
 ```
-Then, simply put this project into a catkin workspace and run `catkin_make` to build everything.
+Then, simply put this project into a catkin workspace and run `catkin_make` or `catkin build` to build everything.
 
 ## Usage
 
