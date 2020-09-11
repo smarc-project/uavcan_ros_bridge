@@ -1,0 +1,2 @@
+- git: {local-name: sam_common, uri: 'https://github.com/smarc-project/sam_common.git', version: noetic-devel}
+- git: {local-name: uavcan_ros_bridge, uri: 'https://github.com/smarc-project/uavcan_ros_bridge.git', version: noetic-devel}

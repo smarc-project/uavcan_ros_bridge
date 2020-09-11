@@ -10,6 +10,7 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic -std=c++11")
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  sam_msgs
   geometry_msgs
   roscpp
   sensor_msgs
@@ -22,8 +23,6 @@ find_package(catkin REQUIRED COMPONENTS
 #find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
 
 #set(UAVCAN_DSDL_DEFINITIONS "/usr/local/share/uavcan/dsdl/uavcan") # For Linux, if the library is installed
-set(UAVCAN_DSDL_DEFINITIONS "${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/dsdl/uavcan")
-add_subdirectory(libuavcan)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -106,6 +105,8 @@ generate_messages(
 #   cfg/DynReconf2.cfg
 # )
 
+#message("UACAN_LIB: ${UAVCAN_LIB}")
+
 ###################################
 ## catkin specific configuration ##
 ###################################
@@ -120,7 +121,9 @@ catkin_package(
     include
     dsdl/dsdlc_generated
     ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/
-    ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/dsdlc_generated
+    ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan_drivers/posix/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan_drivers/linux/include
+    #${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/dsdlc_generated
   LIBRARIES 
     uavcan
     uav_to_ros_imu
@@ -141,6 +144,9 @@ catkin_package(
   CFG_EXTRAS uavcan_ros_bridge-extras.cmake
 )
 
+set(UAVCAN_DSDL_DEFINITIONS "${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/dsdl/uavcan")
+add_subdirectory(libuavcan)
+
 add_custom_target(dsdlc ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/dsdl_compiler/libuavcan_dsdlc
                   "smarc_uavcan_messages" -I${UAVCAN_DSDL_DEFINITIONS}
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dsdl)
@@ -154,7 +160,9 @@ add_custom_target(dsdlc ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/dsdl_com
 include_directories(
   include
   ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/
-  ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/dsdlc_generated
+  ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan_drivers/posix/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan_drivers/linux/include
+  #${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/include/dsdlc_generated
   dsdl/dsdlc_generated
   ${catkin_INCLUDE_DIRS}
 )
