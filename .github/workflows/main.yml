@@ -14,5 +14,14 @@ jobs:
       - uses: actions/checkout@v1
         with:
           submodules: true
+      - name: Set up Python 2.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 2.7
+      - name: Install pyuavcan
+        run: |
+          cd libuavcan/libuavcan/dsdl_compiler/pyuavcan/
+          python setup.py install
+          cd ../../../..
       - uses: 'ros-industrial/industrial_ci@master'
         env: ${{matrix.env}}
