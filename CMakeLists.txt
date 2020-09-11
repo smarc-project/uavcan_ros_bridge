@@ -147,7 +147,7 @@ catkin_package(
 set(UAVCAN_DSDL_DEFINITIONS "${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/dsdl/uavcan")
 add_subdirectory(libuavcan)
 
-add_custom_target(dsdlc ${CMAKE_CURRENT_SOURCE_DIR}/libuavcan/libuavcan/dsdl_compiler/libuavcan_dsdlc
+add_custom_target(dsdlc libuavcan_dsdlc
                   "smarc_uavcan_messages" -I${UAVCAN_DSDL_DEFINITIONS}
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/dsdl)
 
