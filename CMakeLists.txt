@@ -256,15 +256,15 @@ add_executable(ros_to_uavcan_services src/ros_to_uavcan_services.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(uav_to_ros_sensor_pressure dsdlc)
-add_dependencies(uav_to_ros_esc_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(uav_to_ros_circuit_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-#add_dependencies(uav_to_ros_actuator_status ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(ros_to_uav_array_command ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-#add_dependencies(ros_to_uav_percent_stamped ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-#add_dependencies(ros_to_uav_ballast_angles ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(ros_to_uav_uavcan_node_info ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(ros_to_uav_uavcan_transport_stats ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(uav_to_ros_sensor_pressure libuavcan_dsdlc dsdlc)
+add_dependencies(uav_to_ros_esc_status libuavcan_dsdlc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(uav_to_ros_circuit_status libuavcan_dsdlc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(uav_to_ros_actuator_status libuavcan_dsdlc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_to_uav_array_command libuavcan_dsdlc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(ros_to_uav_percent_stamped libuavcan_dsdlc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(ros_to_uav_ballast_angles libuavcan_dsdlc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_to_uav_uavcan_node_info libuavcan_dsdlc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_to_uav_uavcan_transport_stats libuavcan_dsdlc ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(uavcan_to_ros_bridge
