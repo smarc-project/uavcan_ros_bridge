@@ -1,1 +1,0 @@
-uavcan_ros_bridge/UavcanNodeStatus[] array
