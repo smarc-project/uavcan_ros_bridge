@@ -72,6 +72,7 @@ add_service_files(
   FILES
   UavcanGetNodeInfo.srv
   UavcanGetTransportStats.srv
+  UavcanRestartNode.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -141,6 +142,7 @@ catkin_package(
     ros_to_uav_array_command
     ros_to_uav_uavcan_node_info
     ros_to_uav_uavcan_transport_stats
+    ros_to_uav_uavcan_restart
   CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_msgs
 #  DEPENDS system_lib
   CFG_EXTRAS uavcan_ros_bridge-extras.cmake
@@ -238,6 +240,10 @@ add_library(ros_to_uav_uavcan_transport_stats
   src/ros_to_uav/uavcan_transport_stats.cpp
 )
 
+add_library(ros_to_uav_uavcan_restart
+  src/ros_to_uav/uavcan_restart.cpp
+)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -267,6 +273,7 @@ add_dependencies(ros_to_uav_array_command ${${PROJECT_NAME}_EXPORTED_TARGETS} ${
 #add_dependencies(ros_to_uav_ballast_angles ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_uavcan_node_info ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(ros_to_uav_uavcan_transport_stats ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(ros_to_uav_uavcan_restart ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(uavcan_to_ros_bridge
@@ -302,6 +309,7 @@ target_link_libraries(ros_to_uavcan_services
   uavcan_platform_linux
   ros_to_uav_uavcan_node_info
   ros_to_uav_uavcan_transport_stats
+  ros_to_uav_uavcan_restart
   ${catkin_LIBRARIES}
   #${UAVCAN_LIB}
   uavcan
@@ -338,6 +346,7 @@ install(TARGETS
     ros_to_uav_array_command
     ros_to_uav_uavcan_node_info
     ros_to_uav_uavcan_transport_stats
+    ros_to_uav_uavcan_restart
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
