@@ -1,0 +1,13 @@
+#
+# Arm emergency systems
+#
+
+bool ARM = 1
+bool DISARM = 0
+bool command
+
+---
+
+bool ARMED = 1
+bool DISARMED = 0
+bool state
