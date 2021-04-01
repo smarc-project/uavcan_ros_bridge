@@ -45,8 +45,8 @@ int main(int argc, char** argv)
     }
 
     ros::NodeHandle pn("~");
-    ros_to_uav::ServiceConversionServer<uavcan::protocol::GetNodeInfo, uavcan_ros_bridge::UavcanGetNodeInfo> node_info_server(uav_node, pn, "get_node_info");
-    ros_to_uav::ServiceConversionServer<uavcan::protocol::GetTransportStats, uavcan_ros_bridge::UavcanGetTransportStats> transport_stats_server(uav_node, pn, "get_transport_stats");
+    ros_to_uav::ServiceConversionServer<uavcan::protocol::GetNodeInfo, uavcan_ros_msgs::UavcanGetNodeInfo> node_info_server(uav_node, pn, "get_node_info");
+    ros_to_uav::ServiceConversionServer<uavcan::protocol::GetTransportStats, uavcan_ros_msgs::UavcanGetTransportStats> transport_stats_server(uav_node, pn, "get_transport_stats");
 
     /*
      * Running the node.

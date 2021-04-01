@@ -3,7 +3,7 @@
 namespace uav_to_ros {
 
 template <>
-bool convert(const uavcan::ReceivedDataStructure<uavcan::equipment::esc::Status>& uav_msg, uavcan_ros_bridge::ESCStatus& ros_msg, unsigned char uid)
+bool convert(const uavcan::ReceivedDataStructure<uavcan::equipment::esc::Status>& uav_msg, uavcan_ros_msgs::ESCStatus& ros_msg, unsigned char uid)
 {
     if (uid != 255 && uav_msg.esc_index != uid) {
         return false;

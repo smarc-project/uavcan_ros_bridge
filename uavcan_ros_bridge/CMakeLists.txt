@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_srvs
   message_generation
   message_runtime
+  uavcan_ros_msgs
 )
 
 #find_library(UAVCAN_LIB uavcan libuavcan_dsdlc REQUIRED)
@@ -56,37 +57,6 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .msg/.srv/.action file to be processed
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
-
-## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  UavcanNodeStatus.msg
-  UavcanNodeStatusNamed.msg
-  UavcanNodeStatusNamedArray.msg
-  ESCStatus.msg
-  CircuitStatus.msg
-)
-
-## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  UavcanGetNodeInfo.srv
-  UavcanGetTransportStats.srv
-  UavcanRestartNode.srv
-)
-
-## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
-
-## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -143,7 +113,7 @@ catkin_package(
     ros_to_uav_uavcan_node_info
     ros_to_uav_uavcan_transport_stats
     ros_to_uav_uavcan_restart
-  CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_msgs
+  CATKIN_DEPENDS geometry_msgs roscpp sensor_msgs std_msgs uavcan_ros_msgs
 #  DEPENDS system_lib
   CFG_EXTRAS uavcan_ros_bridge-extras.cmake
 )

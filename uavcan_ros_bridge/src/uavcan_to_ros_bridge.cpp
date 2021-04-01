@@ -78,7 +78,7 @@ int main(int argc, char** argv)
     uav_to_ros::ConversionServer<smarc_uavcan_messages::SensorPressure, sensor_msgs::FluidPressure> sensor_pressure_server1(uav_node, pn, "sensor_pressure1", 1);
     uav_to_ros::ConversionServer<smarc_uavcan_messages::SensorPressure, sensor_msgs::FluidPressure> sensor_pressure_server2(uav_node, pn, "sensor_pressure2", 2);
     uav_to_ros::ConversionServer<smarc_uavcan_messages::SensorPressure, sensor_msgs::FluidPressure> motor_oil_pressure_server(uav_node, pn, "motor_oil_pressure", 20);
-    uav_to_ros::ConversionServer<uavcan::equipment::esc::Status, uavcan_ros_bridge::ESCStatus> esc_status_server(uav_node, pn, "esc_status");
+    uav_to_ros::ConversionServer<uavcan::equipment::esc::Status, uavcan_ros_msgs::ESCStatus> esc_status_server(uav_node, pn, "esc_status");
 
     /*
     uav_to_ros::ConversionServer<uavcan::equipment::actuator::Status, sam_msgs::PercentStamped> vbs_feedback_server(uav_node, pn, "vbs_feedback", 13);

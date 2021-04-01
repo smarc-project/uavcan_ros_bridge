@@ -1,1 +1,1 @@
-uavcan_ros_bridge/UavcanNodeStatusNamed[] array
+uavcan_ros_msgs/UavcanNodeStatusNamed[] array
