@@ -3,13 +3,13 @@
 namespace ros_to_uav {
 
 template <>
-bool convert_request(const uavcan_ros_bridge::UavcanGetTransportStats::Request& ros_request, uavcan::protocol::GetTransportStats::Request& uav_request)
+bool convert_request(const uavcan_ros_msgs::UavcanGetTransportStats::Request& ros_request, uavcan::protocol::GetTransportStats::Request& uav_request)
 {
     return true;
 }
 
 template <>
-bool convert_response(const uavcan::protocol::GetTransportStats::Response& uav_response, uavcan_ros_bridge::UavcanGetTransportStats::Response& ros_response)
+bool convert_response(const uavcan::protocol::GetTransportStats::Response& uav_response, uavcan_ros_msgs::UavcanGetTransportStats::Response& ros_response)
 {
     ros_response.transfers_tx = uav_response.transfers_tx;
     ros_response.transfers_rx = uav_response.transfers_rx;

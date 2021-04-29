@@ -21,7 +21,7 @@ jobs:
           python-version: 2.7
       - name: Install pyuavcan
         run: |
-          cd libuavcan/libuavcan/dsdl_compiler/pyuavcan/
+          cd uavcan_ros_bridge/libuavcan/libuavcan/dsdl_compiler/pyuavcan/
           python setup.py install
       - uses: 'ros-industrial/industrial_ci@master'
         env: ${{matrix.env}}

@@ -11,4 +11,4 @@ string name
 #
 # NodeStatus
 #
-uavcan_ros_bridge/UavcanNodeStatus ns
+uavcan_ros_msgs/UavcanNodeStatus ns
