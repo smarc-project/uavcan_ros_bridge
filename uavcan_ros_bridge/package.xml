@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>uavcan_ros_bridge</name>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
   <description>The uavcan_ros_bridge package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
